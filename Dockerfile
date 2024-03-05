@@ -45,6 +45,7 @@ RUN docker-php-ext-configure gd --with-jpeg && docker-php-ext-install gd
 RUN docker-php-ext-install zip
 RUN docker-php-ext-install mysqli
 RUN docker-php-ext-enable imagick
+RUN docker-php-ext-install exif
 RUN docker-php-ext-enable xdebug
 
 # Clean
