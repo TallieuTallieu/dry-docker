@@ -2,7 +2,8 @@ FROM php:7.4.33-apache
 
 WORKDIR /var/www/html
 
-ARG CACHEBUST=1 # change this value if you want to force a rebuild without cache
+# change this value if you want to force a rebuild without cache
+ARG CACHEBUST=1 
 
 ENV PATH=$PATH:/var/www/dry/src/bin
 
@@ -26,9 +27,9 @@ RUN nodenv install 16.20.1
 RUN export NODENV_VERSION=16.20.1 && corepack enable
 RUN nodenv install 18.16.1
 RUN export NODENV_VERSION=18.16.1 && corepack enable
-RUN nodenv install 20.6.2
-RUN export NODENV_VERSION=20.6.2 && corepack enable
-RUN nodenv global 20.6.2 && cd .. && yarn set-version berry
+RUN nodenv install 20.11.1
+RUN export NODENV_VERSION=20.11.1 && corepack enable
+RUN nodenv global 20.11.1 && cd .. && yarn set-version berry
 
 RUN apt -y install rsync
 RUN apt -y install zip unzip zlib1g-dev libzip-dev
