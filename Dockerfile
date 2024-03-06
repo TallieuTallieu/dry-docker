@@ -24,8 +24,9 @@ RUN nodenv install 16.20.1
 RUN export NODENV_VERSION=16.20.1 && corepack enable
 RUN nodenv install 18.16.1
 RUN export NODENV_VERSION=18.16.1 && corepack enable
-RUN nodenv install 20.5.0
-RUN export NODENV_VERSION=20.5.0 && corepack enable
+RUN nodenv install 20.11.1
+RUN export NODENV_VERSION=20.11.1 && corepack enable
+RUN nodenv global 20.11.1 && cd .. && yarn set-version berry
 
 RUN apt -y install rsync
 RUN apt -y install zip unzip zlib1g-dev libzip-dev
