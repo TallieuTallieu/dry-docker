@@ -18,7 +18,9 @@ Run `docker-compose up --build` to update the image.
 
 ## Changes for a specific project
 
-You can make changes to the Dockerfile for a specific project by creating a new branch and using this in the `build` line in the `docker-compose.yml` file.
+You can make changes to the Dockerfile for a specific project by creating a new branch and using this in the `build` line in the `docker-compose.yml` file.  
+
+Or you can copy and paste the Dockerfile into your project and make changes there.
 
 ```yaml
   project_name-site:
