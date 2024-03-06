@@ -11,6 +11,12 @@ ENV PATH=$PATH:/var/www/dry/src/bin
 RUN apt update
 RUN apt -y upgrade
 
+# set timezone
+RUN apt-get update && \
+    apt-get install -yq tzdata && \
+    ln -fs /usr/share/zoneinfo/Europe/Brussels /etc/localtime && \
+    dpkg-reconfigure -f noninteractive tzdata
+
 # install nodenv
 RUN apt -y install curl dirmngr apt-transport-https lsb-release ca-certificates python git-core
 RUN git clone https://github.com/nodenv/nodenv.git /root/.nodenv && \
