@@ -30,6 +30,6 @@ You can make changes to the Dockerfile for a specific project by creating a new 
 If you make changes to the Dockerfile, make sure you create a new tag using [semantic versioning](https://semver.org/) and describe the changes in the tag description.
 
 ```bash
-git tag -a 1.0.1 -m "Description of changes"`
+git tag -a 1.0.1 -m "Description of changes"
 git push origin 1.0.1
 ```
