@@ -3,7 +3,7 @@ FROM php:7.4.33-apache
 WORKDIR /var/www/html
 
 # change this value if you want to force a rebuild without cache
-ARG CACHEBUST=1 
+ARG CACHEBUST=2 
 
 ENV PATH=$PATH:/var/www/dry/src/bin
 
@@ -37,9 +37,9 @@ RUN nodenv install 20.11.1
 RUN export NODENV_VERSION=20.11.1 && corepack enable
 
 RUN apt -y install rsync
-RUN apt -y install zip unzip zlib1g-dev libzip-dev
-RUN apt -y install openssh-client
 RUN apt -y install git
+RUN apt -y install openssh-client
+RUN apt -y install zip unzip autoconf automake libtool nasm zlib1g-dev libzip-dev libpng-dev libimagequant-dev
 RUN apt update
 RUN apt -y install gcc g++ make
 RUN #npm config set unsafe-perm true
