@@ -18,7 +18,7 @@ RUN apt-get update && \
     dpkg-reconfigure -f noninteractive tzdata
 
 # install nodenv
-RUN apt -y install curl dirmngr apt-transport-https lsb-release ca-certificates python git-core
+RUN apt -y install curl dirmngr apt-transport-https lsb-release ca-certificates python3 git-core
 RUN git clone https://github.com/nodenv/nodenv.git /root/.nodenv && \
     git clone https://github.com/nodenv/node-build.git /root/.nodenv/plugins/node-build && \
     git clone https://github.com/nodenv/nodenv-package-rehash.git /root/.nodenv/plugins/nodenv-package-rehash && \
