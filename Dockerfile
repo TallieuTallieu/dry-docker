@@ -48,7 +48,7 @@ RUN apt-get install nano
 # install php extensions
 RUN apt -y install libmagickwand-dev --no-install-recommends
 RUN pecl install imagick
-RUN pecl install xdebug-3.1.5
+RUN pecl install xdebug-3.3.2
 RUN apt install -y libjpeg-dev libpng-dev libfreetype6-dev
 RUN docker-php-ext-configure gd --with-jpeg && docker-php-ext-install gd
 RUN docker-php-ext-install zip
