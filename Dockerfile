@@ -12,8 +12,7 @@ RUN apt update
 RUN apt -y upgrade
 
 # set timezone
-RUN apt-get update && \
-    apt-get install -yq tzdata && \
+RUN apt-get install -yq tzdata && \
     ln -fs /usr/share/zoneinfo/Europe/Brussels /etc/localtime && \
     dpkg-reconfigure -f noninteractive tzdata
 
@@ -36,6 +35,7 @@ RUN export NODENV_VERSION=18.16.1 && corepack enable
 RUN nodenv install 20.11.1
 RUN export NODENV_VERSION=20.11.1 && corepack enable
 
+RUN apt -y install fswatch
 RUN apt -y install rsync
 RUN apt -y install git
 RUN apt -y install openssh-client
