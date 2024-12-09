@@ -5,7 +5,7 @@ WORKDIR /var/www/html
 # change this value if you want to force a rebuild without cache
 ARG CACHEBUST=2 
 
-ENV PATH=$PATH:/var/www/dry/src/bin
+ENV PATH=$PATH:/var/www/html/vendor/bin
 
 # Update
 RUN apt update
