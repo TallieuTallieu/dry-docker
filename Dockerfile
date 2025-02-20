@@ -1,23 +1,23 @@
+# Use PHP 8.2 with Apache
 FROM php:8.2.26-apache
 
 WORKDIR /var/www/html
 
-# change this value if you want to force a rebuild without cache
+# Change this value if you want to force a rebuild without cache
 ARG CACHEBUST=2 
 
 ENV PATH=$PATH:/var/www/html/vendor/bin
 
-# Update
-RUN apt update
-RUN apt -y upgrade
+# Update system packages
+RUN apt update && apt -y upgrade
 
-# set timezone
+# Set timezone
 RUN apt-get update && \
     apt-get install -yq tzdata && \
     ln -fs /usr/share/zoneinfo/Europe/Brussels /etc/localtime && \
     dpkg-reconfigure -f noninteractive tzdata
 
-# install nodenv
+# Install nodenv
 RUN apt -y install curl dirmngr apt-transport-https lsb-release ca-certificates python3 git-core
 RUN git clone https://github.com/nodenv/nodenv.git /root/.nodenv && \
     git clone https://github.com/nodenv/node-build.git /root/.nodenv/plugins/node-build && \
@@ -36,6 +36,7 @@ RUN export NODENV_VERSION=18.16.1 && corepack enable
 RUN nodenv install 20.11.1
 RUN export NODENV_VERSION=20.11.1 && corepack enable
 
+# Install utilities
 RUN apt -y install rsync
 RUN apt -y install git
 RUN apt -y install openssh-client
@@ -45,7 +46,7 @@ RUN apt -y install gcc g++ make
 RUN #npm config set unsafe-perm true
 RUN apt-get install nano
 
-# install php extensions
+# Install PHP extensions
 RUN apt -y install libmagickwand-dev --no-install-recommends
 RUN pecl install imagick
 RUN pecl install xdebug-3.3.2
@@ -58,18 +59,22 @@ RUN docker-php-ext-install exif
 RUN docker-php-ext-enable xdebug
 RUN docker-php-ext-install soap
 
-# Clean
-RUN apt clean
-RUN apt autoremove
+# Install intl extension
+RUN apt-get install -y libicu-dev && \
+    docker-php-ext-configure intl && \
+    docker-php-ext-install intl
+
+# Clean up
+RUN apt clean && apt autoremove -y
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Enable apache modules
+# Enable Apache modules
 RUN a2enmod rewrite
 RUN a2enmod expires
 
-# Symbolic link php executable for dry
+# Symbolic link for PHP
 RUN ln -s /usr/local/bin/php /usr/bin/php
 
 CMD ["/bin/bash"]
