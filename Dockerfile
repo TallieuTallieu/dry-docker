@@ -3,7 +3,7 @@ FROM php:7.2.34-apache
 WORKDIR /var/www/html
 
 # change this value if you want to force a rebuild without cache
-ARG CACHEBUST=3 
+ARG CACHEBUST=4
 
 ENV PATH=$PATH:/var/www/dry/src/bin
 
@@ -51,7 +51,7 @@ RUN pecl install imagick
 RUN pecl install xdebug-3.1.5
 RUN apt install -y libjpeg-dev libpng-dev libfreetype6-dev
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install gd-ext-install
+    && docker-php-ext-install gd
 RUN docker-php-ext-install mysqli
 RUN docker-php-ext-enable imagick
 RUN docker-php-ext-install exif
