@@ -68,6 +68,10 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Enable apache modules
 RUN a2enmod rewrite
 RUN a2enmod expires
+RUN a2enmod proxy
+RUN a2enmod proxy_http
+RUN a2enmod proxy_balancer
+RUN a2enmod lbmethod_byrequests
 
 # Symbolic link php executable for dry
 RUN ln -s /usr/local/bin/php /usr/bin/php
