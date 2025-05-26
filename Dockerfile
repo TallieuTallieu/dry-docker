@@ -34,8 +34,8 @@ RUN nodenv install 18.16.1
 RUN export NODENV_VERSION=18.16.1 && corepack enable
 RUN nodenv install 20.11.1
 RUN export NODENV_VERSION=20.11.1 && corepack enable
-RUN nodenv install 22.16.0
-RUN export NODENV_VERSION=20.16.0 && corepack enable
+RUN nodenv install 22.15.0
+RUN export NODENV_VERSION=20.15.0 && corepack enable
 
 RUN apt -y install fswatch
 RUN apt -y install rsync
