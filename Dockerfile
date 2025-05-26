@@ -35,6 +35,8 @@ RUN nodenv install 18.16.1
 RUN export NODENV_VERSION=18.16.1 && corepack enable
 RUN nodenv install 20.11.1
 RUN export NODENV_VERSION=20.11.1 && corepack enable
+RUN nodenv install 22.16.0
+RUN export NODENV_VERSION=20.16.0 && corepack enable
 
 # Install utilities
 RUN apt -y install rsync
@@ -44,7 +46,7 @@ RUN apt -y install zip unzip autoconf automake libtool nasm zlib1g-dev libzip-de
 RUN apt update
 RUN apt -y install gcc g++ make
 RUN #npm config set unsafe-perm true
-RUN apt-get install nano
+RUN apt -y install nano
 
 # Install PHP extensions
 RUN apt -y install libmagickwand-dev --no-install-recommends
