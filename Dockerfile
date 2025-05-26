@@ -35,8 +35,8 @@ RUN nodenv install 18.16.1
 RUN export NODENV_VERSION=18.16.1 && corepack enable
 RUN nodenv install 20.11.1
 RUN export NODENV_VERSION=20.11.1 && corepack enable
-RUN nodenv install 22.15.0
-RUN export NODENV_VERSION=20.15.0 && corepack enable
+RUN nodenv install 22.14.0
+RUN export NODENV_VERSION=20.14.0 && corepack enable
 
 # Install utilities
 RUN apt -y install rsync
