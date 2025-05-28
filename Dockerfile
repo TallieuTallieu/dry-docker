@@ -3,7 +3,7 @@ FROM php:7.4.33-apache
 WORKDIR /var/www/html
 
 # change this value if you want to force a rebuild without cache
-ARG CACHEBUST=3 
+ARG CACHEBUST=4 
 
 ENV PATH=$PATH:/var/www/dry/src/bin
 
