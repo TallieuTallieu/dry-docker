@@ -3,8 +3,8 @@ FROM php:8.2.26-apache
 
 WORKDIR /var/www/html
 
-# Change this value if you want to force a rebuild without cache
-ARG CACHEBUST=2 
+# change this value if you want to force a rebuild without cache
+ARG CACHEBUST=4 
 
 ENV PATH=$PATH:/var/www/html/vendor/bin
 
