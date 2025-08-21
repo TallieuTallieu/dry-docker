@@ -37,7 +37,7 @@ services:
 
   project_name-tnt-db:
     container_name: project_name-tnt-db
-    build: https://github.com/TallieuTallieu/dry-docker.git#tnt-postgres
+    build: https://github.com/TallieuTallieu/dry-docker.git#tnt-mysql
     environment:
       REMOTE_USER: ${PROD_SERVER_USER}
       REMOTE_HOST: ${PROD_SERVER_IP}
