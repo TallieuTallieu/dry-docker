@@ -44,7 +44,7 @@ services:
     volumes:
       - ~/.ssh:/root/.ssh:ro
     ports:
-      - '5432'
+      - '3306'
     networks:
       - dev
 
