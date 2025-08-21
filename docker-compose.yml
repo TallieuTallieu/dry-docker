@@ -35,6 +35,19 @@ services:
       - dev
     command: --sql-mode=ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
 
+  project_name-tnt-db:
+    container_name: project_name-tnt-db
+    build: https://github.com/TallieuTallieu/dry-docker.git#tnt-postgres
+    environment:
+      REMOTE_USER: ${PROD_SERVER_USER}
+      REMOTE_HOST: ${PROD_SERVER_IP}
+    volumes:
+      - ~/.ssh:/root/.ssh:ro
+    ports:
+      - '5432'
+    networks:
+      - dev
+
   project_name-center:
     build: ../center
     hostname: docker_center
