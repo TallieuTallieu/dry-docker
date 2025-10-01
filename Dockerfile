@@ -47,6 +47,10 @@ RUN apt -y install gcc g++ make
 RUN #npm config set unsafe-perm true
 RUN apt -y install nano
 
+# Add WebP support 
+RUN apt install -y libjpeg-dev libpng-dev libfreetype6-dev libwebp-dev \
+    && docker-php-ext-configure gd --with-jpeg-dir=/usr/include/ --with-freetype-dir=/usr/include/ --with-webp-dir=/usr/include/
+
 # install php extensions
 RUN apt -y install libmagickwand-dev --no-install-recommends
 RUN pecl install imagick
