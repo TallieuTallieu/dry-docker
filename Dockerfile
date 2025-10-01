@@ -48,7 +48,7 @@ RUN #npm config set unsafe-perm true
 RUN apt -y install nano
 
 # Add WebP support 
-RUN apt install -y libjpeg-dev libpng-dev libfreetype6-dev libwebp-dev \
+RUN apt install -y libjpeg-dev libpt checkng-dev libfreetype6-dev libwebp-dev \
     && docker-php-ext-configure gd --with-jpeg-dir=/usr/include/ --with-freetype-dir=/usr/include/ --with-webp-dir=/usr/include/
 
 # install php extensions
