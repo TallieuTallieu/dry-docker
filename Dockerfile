@@ -1,5 +1,5 @@
 # Use PHP 8.2 with Apache
-FROM php:8.4.12-apache
+FROM php:8.2.26-apache
 
 WORKDIR /var/www/html
 
@@ -52,8 +52,12 @@ RUN apt -y install nano
 RUN apt -y install libmagickwand-dev --no-install-recommends
 RUN pecl install imagick
 RUN pecl install xdebug-3.4.5
-RUN apt install -y libjpeg-dev libpng-dev libfreetype6-dev
-RUN docker-php-ext-configure gd --with-jpeg --with-freetype && docker-php-ext-install gd
+
+# webp support
+RUN apt install -y libjpeg-dev libpng-dev libfreetype6-dev libwebp-dev \
+    && docker-php-ext-configure gd --with-jpeg --with-freetype --with-webp \
+    && docker-php-ext-install gd
+
 RUN docker-php-ext-install zip
 RUN docker-php-ext-install mysqli
 RUN docker-php-ext-enable imagick
