@@ -1,9 +1,11 @@
-FROM php:7.2.34-apache
+FROM php:7.4-apache
 
-# --- Fix Buster archive issue ---
+# --- Fix Bullseye archive issue ---
 RUN sed -i 's|deb.debian.org/debian|archive.debian.org/debian|g' /etc/apt/sources.list \
- && sed -i 's|security.debian.org|archive.debian.org|g' /etc/apt/sources.list \
- && echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check-valid-until
+ && sed -i 's|security.debian.org|archive.debian.org/debian-security|g' /etc/apt/sources.list \
+ && echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check-valid-until \
+ && sed -i '/bullseye-security/ s/^/#/' /etc/apt/sources.list \
+ && apt-get update
 
 WORKDIR /var/www/html
 
@@ -49,12 +51,11 @@ RUN apt -y install openssh-client
 RUN apt -y install zip unzip autoconf automake libtool nasm zlib1g-dev libzip-dev libpng-dev libimagequant-dev
 RUN apt update
 RUN apt -y install gcc g++ make
-RUN #npm config set unsafe-perm true
 RUN apt -y install nano
 
-# Add WebP support d
+# Add WebP support
 RUN apt-get update && apt-get install -y libjpeg-dev libpng-dev libfreetype6-dev libwebp-dev && rm -rf /var/lib/apt/lists/*
-RUN command docker-php-ext-configure gd --with-jpeg-dir=/usr/include/ --with-freetype-dir=/usr/include/ --with-webp-dir=/usr/include/
+RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ --with-webp=/usr/include/
 
 # install php extensions
 RUN apt-get update --allow-releaseinfo-change \
@@ -63,7 +64,7 @@ RUN apt-get update --allow-releaseinfo-change \
 RUN pecl install imagick
 RUN pecl install xdebug-3.1.5
 RUN apt install -y libjpeg-dev libpng-dev libfreetype6-dev
-RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
     && docker-php-ext-install gd
 RUN docker-php-ext-install mysqli
 RUN docker-php-ext-enable imagick
