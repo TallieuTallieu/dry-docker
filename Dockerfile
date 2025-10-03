@@ -1,5 +1,10 @@
 FROM php:7.2.34-apache
 
+# --- Fix Buster archive issue ---
+RUN sed -i 's|deb.debian.org/debian|archive.debian.org/debian|g' /etc/apt/sources.list \
+ && sed -i 's|security.debian.org|archive.debian.org|g' /etc/apt/sources.list \
+ && echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check-valid-until
+
 WORKDIR /var/www/html
 
 # change this value if you want to force a rebuild without cache
@@ -47,12 +52,14 @@ RUN apt -y install gcc g++ make
 RUN #npm config set unsafe-perm true
 RUN apt -y install nano
 
-# Add WebP support 
-RUN apt install -y libjpeg-dev libpt checkng-dev libfreetype6-dev libwebp-dev \
-    && docker-php-ext-configure gd --with-jpeg-dir=/usr/include/ --with-freetype-dir=/usr/include/ --with-webp-dir=/usr/include/
+# Add WebP support d
+RUN apt-get update && apt-get install -y libjpeg-dev libpng-dev libfreetype6-dev libwebp-dev && rm -rf /var/lib/apt/lists/*
+RUN command docker-php-ext-configure gd --with-jpeg-dir=/usr/include/ --with-freetype-dir=/usr/include/ --with-webp-dir=/usr/include/
 
 # install php extensions
-RUN apt -y install libmagickwand-dev --no-install-recommends
+RUN apt-get update --allow-releaseinfo-change \
+ && apt-get install -y --no-install-recommends libmagickwand-dev \
+ && rm -rf /var/lib/apt/lists/*
 RUN pecl install imagick
 RUN pecl install xdebug-3.1.5
 RUN apt install -y libjpeg-dev libpng-dev libfreetype6-dev
@@ -66,7 +73,7 @@ RUN docker-php-ext-install soap
 
 # Clean
 RUN apt clean
-RUN apt autoremove
+RUN apt autoremove -y
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
