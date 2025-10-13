@@ -91,7 +91,7 @@ RUN if [ "$ENABLE_PUPPETEER" = "true" ]; then \
     apt update && apt install -y --no-install-recommends \
     libx11-xcb1 \
     libxcomposite1 \
-    libasound2t64 \
+    libasound2 \
     libatk1.0-0 \
     libatk-bridge2.0-0 \
     libcairo2 \
