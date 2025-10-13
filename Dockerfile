@@ -119,7 +119,13 @@ RUN if [ "$ENABLE_PUPPETEER" = "true" ]; then \
     libxss1 \
     libxtst6 \
     && rm -rf /var/lib/apt/lists/*; \
-    fi
+    
+    # Set a default Node version and create symlinks for www-data access
+    RUN nodenv global 20.11.1 && \
+        ln -s /root/.nodenv/shims/node /usr/local/bin/node && \
+        ln -s /root/.nodenv/shims/npm /usr/local/bin/npm && \
+        chmod -R 755 /root/.nodenv
+fi
 
 # Clean
 RUN apt clean
