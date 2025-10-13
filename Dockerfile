@@ -14,17 +14,46 @@ ARG CACHEBUST=4
 
 ENV PATH=$PATH:/var/www/dry/src/bin
 
-# Update
-RUN apt update
-RUN apt -y upgrade
+# Update and install all system packages in one go
+RUN apt update --allow-releaseinfo-change && apt -y upgrade && \
+    apt install -yq --no-install-recommends \
+    tzdata \
+    curl \
+    dirmngr \
+    apt-transport-https \
+    lsb-release \
+    ca-certificates \
+    python \
+    git-core \
+    fswatch \
+    rsync \
+    git \
+    openssh-client \
+    zip \
+    unzip \
+    autoconf \
+    automake \
+    libtool \
+    nasm \
+    zlib1g-dev \
+    libzip-dev \
+    libpng-dev \
+    libimagequant-dev \
+    gcc \
+    g++ \
+    make \
+    nano \
+    libjpeg-dev \
+    libfreetype6-dev \
+    libwebp-dev \
+    libmagickwand-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 # set timezone
-RUN apt-get install -yq tzdata && \
-    ln -fs /usr/share/zoneinfo/Europe/Brussels /etc/localtime && \
+RUN ln -fs /usr/share/zoneinfo/Europe/Brussels /etc/localtime && \
     dpkg-reconfigure -f noninteractive tzdata
 
-# install nodenv
-RUN apt -y install curl dirmngr apt-transport-https lsb-release ca-certificates python git-core
+# install nodenv (no apt install needed here anymore)
 RUN git clone https://github.com/nodenv/nodenv.git /root/.nodenv && \
     git clone https://github.com/nodenv/node-build.git /root/.nodenv/plugins/node-build && \
     git clone https://github.com/nodenv/nodenv-package-rehash.git /root/.nodenv/plugins/nodenv-package-rehash && \
@@ -44,26 +73,10 @@ RUN export NODENV_VERSION=20.11.1 && corepack enable
 RUN nodenv install 22.14.0
 RUN export NODENV_VERSION=22.14.0 && corepack enable
 
-RUN apt -y install fswatch
-RUN apt -y install rsync
-RUN apt -y install git
-RUN apt -y install openssh-client
-RUN apt -y install zip unzip autoconf automake libtool nasm zlib1g-dev libzip-dev libpng-dev libimagequant-dev
-RUN apt update
-RUN apt -y install gcc g++ make
-RUN apt -y install nano
-
-# Add WebP support
-RUN apt-get update && apt-get install -y libjpeg-dev libpng-dev libfreetype6-dev libwebp-dev && rm -rf /var/lib/apt/lists/*
+# Configure and install php extensions (all packages already installed above)
 RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ --with-webp=/usr/include/
-
-# install php extensions
-RUN apt-get update --allow-releaseinfo-change \
- && apt-get install -y --no-install-recommends libmagickwand-dev \
- && rm -rf /var/lib/apt/lists/*
 RUN pecl install imagick
 RUN pecl install xdebug-3.1.5
-RUN apt install -y libjpeg-dev libpng-dev libfreetype6-dev
 RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
     && docker-php-ext-install gd
 RUN docker-php-ext-install mysqli
@@ -71,6 +84,42 @@ RUN docker-php-ext-enable imagick
 RUN docker-php-ext-install exif
 RUN docker-php-ext-enable xdebug
 RUN docker-php-ext-install soap
+
+# Conditionally install Puppeteer dependencies
+ARG ENABLE_PUPPETEER=false
+RUN if [ "$ENABLE_PUPPETEER" = "true" ]; then \
+    apt update && apt install -y --no-install-recommends \
+    libx11-xcb1 \
+    libxcomposite1 \
+    libasound2t64 \
+    libatk1.0-0 \
+    libatk-bridge2.0-0 \
+    libcairo2 \
+    libcups2 \
+    libdbus-1-3 \
+    libexpat1 \
+    libfontconfig1 \
+    libgbm1 \
+    libgcc1 \
+    libglib2.0-0 \
+    libgtk-3-0 \
+    libnspr4 \
+    libpango-1.0-0 \
+    libpangocairo-1.0-0 \
+    libstdc++6 \
+    libx11-6 \
+    libxcb1 \
+    libxcursor1 \
+    libxdamage1 \
+    libxext6 \
+    libxfixes3 \
+    libxi6 \
+    libxrandr2 \
+    libxrender1 \
+    libxss1 \
+    libxtst6 \
+    && rm -rf /var/lib/apt/lists/*; \
+    fi
 
 # Clean
 RUN apt clean
@@ -85,5 +134,9 @@ RUN a2enmod expires
 
 # Symbolic link php executable for dry
 RUN ln -s /usr/local/bin/php /usr/bin/php
+
+# Health check for Apache
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost/ || exit 1
 
 CMD ["/bin/bash"]
