@@ -131,8 +131,5 @@ RUN a2enmod expires
 # Symbolic link for PHP
 RUN ln -s /usr/local/bin/php /usr/bin/php
 
-# Health check for Apache
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost/ || exit 1
 
 CMD ["/bin/bash"]
