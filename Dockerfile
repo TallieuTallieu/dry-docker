@@ -84,6 +84,7 @@ RUN docker-php-ext-enable imagick
 RUN docker-php-ext-install exif
 RUN docker-php-ext-enable xdebug
 RUN docker-php-ext-install soap
+RUN docker-php-ext-install intl
 
 # Conditionally install Puppeteer dependencies
 ARG ENABLE_PUPPETEER=false
