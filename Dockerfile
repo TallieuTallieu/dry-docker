@@ -59,7 +59,7 @@ RUN git clone https://github.com/nodenv/nodenv.git /root/.nodenv && \
     git clone https://github.com/nodenv/nodenv-package-rehash.git /root/.nodenv/plugins/nodenv-package-rehash && \
     git clone https://github.com/nodenv/nodenv-update.git /root/.nodenv/plugins/nodenv-update
 
-ENV PATH /root/.nodenv/shims:/root/.nodenv/bin:$PATH
+ENV PATH=/root/.nodenv/shims:/root/.nodenv/bin:$PATH
 
 RUN nodenv install 10.24.1
 RUN nodenv install 12.22.12
