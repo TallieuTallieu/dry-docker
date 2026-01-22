@@ -83,6 +83,7 @@ RUN docker-php-ext-install mysqli
 RUN docker-php-ext-enable imagick
 RUN docker-php-ext-install exif
 RUN docker-php-ext-enable xdebug
+RUN docker-php-ext-install zip
 RUN docker-php-ext-install soap
 
 # Conditionally install Puppeteer dependencies
