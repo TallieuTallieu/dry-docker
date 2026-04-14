@@ -116,6 +116,7 @@ RUN if [ "$ENABLE_PUPPETEER" = "true" ]; then \
     libxrender1 \
     libxss1 \
     libxtst6 \
+    ghostscript \
     && rm -rf /var/lib/apt/lists/*; \
     fi
 
