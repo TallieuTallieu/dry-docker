@@ -126,6 +126,15 @@ RUN apt clean && apt autoremove -y
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Apache document root. Defaults to /var/www/html so existing dry3 projects
+# keep their behavior; v4 projects override this to /var/www/html/public via
+# `build.args` in their docker-compose.yml. AllowOverride All is already
+# granted to /var/www/ by the base image's docker-php.conf, so the override
+# does not require an additional <Directory> block.
+ARG APACHE_DOCUMENT_ROOT=/var/www/html
+ENV APACHE_DOCUMENT_ROOT=${APACHE_DOCUMENT_ROOT}
+RUN sed -ri "s!DocumentRoot /var/www/html!DocumentRoot ${APACHE_DOCUMENT_ROOT}!" /etc/apache2/sites-available/000-default.conf
+
 # Enable Apache modules
 RUN a2enmod rewrite
 RUN a2enmod expires
