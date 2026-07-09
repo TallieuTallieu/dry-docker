@@ -66,8 +66,8 @@ RUN nodenv install 20.11.1
 RUN export NODENV_VERSION=20.11.1 && corepack enable
 RUN nodenv install 22.14.0
 RUN export NODENV_VERSION=22.14.0 && corepack enable
-RUN nodenv install 24.18.0
-RUN export NODENV_VERSION=24.18.0 && corepack enable
+RUN nodenv install 24.16.0
+RUN export NODENV_VERSION=24.16.0 && corepack enable
 
 # Install PHP extensions (all packages already installed above)
 RUN pecl install imagick
