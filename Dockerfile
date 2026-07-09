@@ -4,7 +4,7 @@ FROM php:8.4.12-apache
 WORKDIR /var/www/html
 
 # change this value if you want to force a rebuild without cache
-ARG CACHEBUST=4 
+ARG CACHEBUST=5 
 
 ENV PATH=$PATH:/var/www/html/vendor/bin
 
@@ -66,8 +66,8 @@ RUN nodenv install 20.11.1
 RUN export NODENV_VERSION=20.11.1 && corepack enable
 RUN nodenv install 22.14.0
 RUN export NODENV_VERSION=22.14.0 && corepack enable
-RUN nodenv install 24.16.0
-RUN export NODENV_VERSION=24.16.0 && corepack enable
+RUN nodenv install 24.18.0
+RUN export NODENV_VERSION=24.18.0 && corepack enable
 
 # Install PHP extensions (all packages already installed above)
 RUN pecl install imagick
