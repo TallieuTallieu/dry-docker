@@ -36,9 +36,17 @@ RUN nodenv install 20.11.1
 RUN export NODENV_VERSION=20.11.1 && corepack enable
 RUN nodenv install 22.14.0
 RUN export NODENV_VERSION=22.14.0 && corepack enable
+# node-build only knows the versions it shipped with, and the clone above is a
+# cached layer from before node 24 existed. Refresh it or the install below
+# fails with "definition not found".
+RUN git -C /root/.nodenv/plugins/node-build pull
 RUN nodenv install 24.18.0
 RUN export NODENV_VERSION=24.18.0 && corepack enable
 
+# The apt update near the top is a cached layer, so its package lists go stale as
+# Debian supersedes revisions. Without refreshing here the installs below fail
+# with a 404 on the exact .deb they were told to fetch.
+RUN apt update
 RUN apt -y install fswatch
 RUN apt -y install rsync
 RUN apt -y install git
